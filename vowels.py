@@ -25,14 +25,28 @@ def get_name_list(vowel_index, name_list):
                     name_list.append(temp_name)
     return name_list
 
-def main(name):
-    vi = get_vowel_index(name.lower())
-    nl = [name.lower()]
-    print "vowel index is now: %r, and namelist is now: %r" % (vi,nl)
-    for i in vi:
-        nl = get_name_list(vi, nl)
-    print "Completed generating names."
-    print nl
-    print "Total number of names generated: %d" % len(nl)
+def process_single_name(name):
+    temp_vowel_index = get_vowel_index(name.lower())
+    temp_name_list = [name.lower()]
+    for current_vowel in temp_vowel_index:
+        temp_name_list = get_name_list(temp_vowel_index, temp_name_list)
+    print "Completed \"%s\": Total number of names generated: %d" % (name, len(temp_name_list))
+    return temp_name_list
 
-main(argv[1])
+def name_hopper(big_list):
+    full_list = []
+    for current_name in big_list:
+        full_list.append( process_single_name(current_name) )
+    unwrapped_list = []
+    for x in full_list:
+        print "Length of x:", len(x)
+        for y in x:
+            unwrapped_list.append(y)
+    print "Unwrapped list site: ", len(unwrapped_list)
+    unwrapped_list.sort()
+    f = open("unwrapped_list.txt", "w")
+    for z in unwrapped_list:
+        f.write(z + "\n")
+    f.close()
+
+name_hopper( ["Abdi","Abdul","Abdullahi","Adega","Akinyemi","Amir","Aroni","Bahraini","Bijal","Boit","Boris","Detai","Eegan","Farah","Fatuma","Gacheru","Gandii","Mahindra","Joram","Kabul","Karri","Karua","Kawhaja","Kimani","Kipchogi","Kofi","Kwach","Machozi","Mbaabu","Muchiri","Mugambi","Nyandarua","Okeyo","Olomide","Osire","Rehal"] )
