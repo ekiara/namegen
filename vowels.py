@@ -1,51 +1,46 @@
 #!/usr/bin/env python
+# vowels
 
-"""
-Synopsis: prog name
+#def sub_vowel(vowel):
+    #vowel_list = []
+    #alternative_vowel = "a"
+    #return alternative_vowel
 
-Given a name as a string generate every permutation of that name using a set
-of rules such as vowel substitution, "hard sound" substitution.
+###
+### Specification:
+###
+### Take a name (a string)
+###
+### Replace every internal vowel with every alternative vowel:
+###   - "internal vowel" means a single character vowel that DOES NOT have the index of 0 or -1
+###   - "alternative vowel" is given any vowel, all other vowels that are not that vowel are alternative vowels
+###
+### Return an array of strings that have every permutation of internal vowel alternatives
+###
 
-Return a list of strings with all name permutations.
 
-"""
+def alternative_vowel(vowel):
+    #alt_vowel_list = ["a","e","i","o","u","y"]
+    alt_vowel_list = ["a","e","i","o","u"]
+
+    if (alt_vowel_list.__contains__(vowel)):
+        return alt_vowel_list.remove(vowel)
+    else:
+        return []
 
 
-def permutate_name(name):
-    for night in range(len(name)):
-        print "night: ", night
-
-        temp_vowel_index = vowel_index(name, night)
-        print "temp_vowel_index: ", temp_vowel_index
-
-        for i in "aeiou":
-            temp_name = ""
-            #print "INITIAL temp_name: ", temp_name
-
-            for j in range(len(name)):
-                if j == temp_vowel_index:
-                    temp_name += i
-                    #print "IF temp_name: ", temp_name
-
+def index_a(name):
+    index_a = []
+    index_position = 0
+    try:
+        while 1:
+            if index_position = -1:
+                break
+            else:
+                if len(index_a) = 0:
+                    index_position = name.find("a")
                 else:
-                    temp_name += name[j]
-                    #print "ELSE temp_name" , temp_name
-
-        print "Mutated Name: ", temp_name
-
-
-def vowel_index(name, offset):
-    for i in "aeiou":
-        #print "Checking: ", i
-        try:
-            vowel_index = name.lower().index(i)
-        except ValueError:
-            continue
-        return vowel_index
-    return None
-
-
-def main():
-    permutate_name("Eric")
-
-main()
+                    index_position = name.find("a", index_a[-1])
+            index_a.append(index_position)
+    catch ValueError:
+        return
