@@ -1,17 +1,14 @@
 #!/usr/bin/env python
-
 """
 vowels
 
 Input a list of names as strings.
-Generate all possibile alternate versions of that string performing vowel
- substitution.
+Generate all possibile alternate versions of that string performing vowel substitution.
 Return a list of generated name versions.
 """
-
 from sys import argv
-
 VOWELS = "aeiou"
+
 
 def get_vowel_index(name):
     vowel_index = []
@@ -19,6 +16,7 @@ def get_vowel_index(name):
         if VOWELS.__contains__(name.lower()[i]):
             vowel_index.append(i)
     return vowel_index
+
 
 def get_name_list(vowel_index, name_list):
     for jina in name_list:
@@ -30,18 +28,21 @@ def get_name_list(vowel_index, name_list):
                     name_list.append(temp_name)
     return name_list
 
-def process_single_name(name):
+
+def generate_name_variations(name):
     temp_vowel_index = get_vowel_index(name.lower())
-    temp_name_list = [name.lower()]
-    for current_vowel in temp_vowel_index:
-        temp_name_list = get_name_list(temp_vowel_index, temp_name_list)
-    print "Completed \"%s\": Total number of names generated: %d" % (name, len(temp_name_list))
-    return temp_name_list
+    if temp_vowel_index.__len__() != 0:
+        temp_name_list = [ name.lower() ]
+        for current_vowel in temp_vowel_index:
+            temp_name_list = get_name_list(temp_vowel_index, temp_name_list)
+        print "Completed \"%s\": Total number of names generated: %d" % (name, len(temp_name_list))
+        return temp_name_list
+
 
 def name_hopper(big_list):
     full_list = []
     for current_name in big_list:
-        full_list.append( process_single_name(current_name) )
+        full_list.append( generate_name_variations(current_name) )
     unwrapped_list = []
     for x in full_list:
         print "Length of x:", len(x)
