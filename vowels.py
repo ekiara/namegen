@@ -1,46 +1,56 @@
 #!/usr/bin/env python
-# vowels
 
-#def sub_vowel(vowel):
-    #vowel_list = []
-    #alternative_vowel = "a"
-    #return alternative_vowel
+"""
+vowels
 
-###
-### Specification:
-###
-### Take a name (a string)
-###
-### Replace every internal vowel with every alternative vowel:
-###   - "internal vowel" means a single character vowel that DOES NOT have the index of 0 or -1
-###   - "alternative vowel" is given any vowel, all other vowels that are not that vowel are alternative vowels
-###
-### Return an array of strings that have every permutation of internal vowel alternatives
-###
+Input a list of names as strings.
+Generate all possibile alternate versions of that string performing vowel
+ substitution.
+Return a list of generated name versions.
+"""
 
+from sys import argv
 
-def alternative_vowel(vowel):
-    #alt_vowel_list = ["a","e","i","o","u","y"]
-    alt_vowel_list = ["a","e","i","o","u"]
+VOWELS = "aeiou"
 
-    if (alt_vowel_list.__contains__(vowel)):
-        return alt_vowel_list.remove(vowel)
-    else:
-        return []
+def get_vowel_index(name):
+    vowel_index = []
+    for i in range(len(name.lower())):
+        if VOWELS.__contains__(name.lower()[i]):
+            vowel_index.append(i)
+    return vowel_index
 
+def get_name_list(vowel_index, name_list):
+    for jina in name_list:
+        for i in vowel_index:
+            for j in VOWELS:
+                temp_name = jina.lower()
+                temp_name = temp_name[:i] + j + temp_name[i+1:]
+                if name_list.__contains__(temp_name) == False:
+                    name_list.append(temp_name)
+    return name_list
 
-def index_a(name):
-    index_a = []
-    index_position = 0
-    try:
-        while 1:
-            if index_position = -1:
-                break
-            else:
-                if len(index_a) = 0:
-                    index_position = name.find("a")
-                else:
-                    index_position = name.find("a", index_a[-1])
-            index_a.append(index_position)
-    catch ValueError:
-        return
+def process_single_name(name):
+    temp_vowel_index = get_vowel_index(name.lower())
+    temp_name_list = [name.lower()]
+    for current_vowel in temp_vowel_index:
+        temp_name_list = get_name_list(temp_vowel_index, temp_name_list)
+    print "Completed \"%s\": Total number of names generated: %d" % (name, len(temp_name_list))
+    return temp_name_list
+
+def name_hopper(big_list):
+    full_list = []
+    for current_name in big_list:
+        full_list.append( process_single_name(current_name) )
+    unwrapped_list = []
+    for x in full_list:
+        print "Length of x:", len(x)
+        for y in x:
+            unwrapped_list.append(y)
+    print "Unwrapped list site: ", len(unwrapped_list)
+    f = open("unwrapped_list.txt", "w")
+    for z in unwrapped_list:
+        f.write(z + "\n")
+    f.close()
+
+name_hopper( ["Abdi","Abdul","Abdullahi","Adega","Akinyemi","Amir","Aroni","Bahraini","Bijal","Boit","Boris","Detai","Eegan","Farah","Fatuma","Gacheru","Gandii","Mahindra","Joram","Kabul","Karri","Karua","Kawhaja","Kimani","Kipchogi","Kofi","Kwach","Machozi","Mbaabu","Muchiri","Mugambi","Nyandarua","Okeyo","Olomide","Osire","Rehal"] )
