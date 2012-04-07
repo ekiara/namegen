@@ -1,57 +1,76 @@
 #!/usr/bin/env python
 """
 vowels
-
-Input a list of names as strings.
-Generate all possibile alternate versions of that string performing vowel substitution.
-Return a list of generated name versions.
+Fast generation of name alternatives.
 """
-from sys import argv
-VOWELS = "aeiou"
+VOWELS = set("aeiou")
+sample_name_list = ["Abdi", "Abdul", "Adega", "Amir", "Aroni", "Boit", "Gacheru", "Kabul", "Karri", "Karua", "Kimani", "Kipchogi", "Kofi", "Machozi", "Muchiri", "Mugambi", "Okeyo", "Olomide", "Osire"]
 
 
-def get_vowel_index(name):
+def vowel_count(name):
+    """Given a name, return the number of vowels."""
+    count = 0
+    for i in VOWELS:
+        count += name.count(i)
+    return count
+
+
+def name_matrix(name):
+    """Generate matrix of names."""
+    matrix = []
+    for i in range(5**vowel_count(name)):
+        matrix.append(name)
+    return matrix
+
+
+def vowel_index(name):
+    """Return a list of index positions
+    where vowels appear in the name.
+    """
     vowel_index = []
-    for i in range(len(name.lower())):
-        if VOWELS.__contains__(name.lower()[i]):
+    for i in range(len(name)):
+        if VOWELS.__contains__(name[i]):
             vowel_index.append(i)
     return vowel_index
 
 
-def get_name_list(vowel_index, name_list):
-    for jina in name_list:
-        for i in vowel_index:
-            for j in VOWELS:
-                temp_name = jina.lower()
-                temp_name = temp_name[:i] + j + temp_name[i+1:]
-                if name_list.__contains__(temp_name) == False:
-                    name_list.append(temp_name)
-    return name_list
+def vowel_list(count):
+    """Build up a list of vowels.
+    """
+    vlist = []
+    for i in range(count):
+        vlist.extend(list(VOWELS))
+    return vlist
 
 
-def generate_name_variations(name):
-    temp_vowel_index = get_vowel_index(name.lower())
-    if temp_vowel_index.__len__() != 0:
-        temp_name_list = [ name.lower() ]
-        for current_vowel in temp_vowel_index:
-            temp_name_list = get_name_list(temp_vowel_index, temp_name_list)
-        print "Completed \"%s\": Total number of names generated: %d" % (name, len(temp_name_list))
-        return temp_name_list
+def mutate(matrix, vowel_list, vowel_index):
+    """
+    """
+    for position in vowel_index:
+        matrix.sort()
+        for i in range(len(matrix)):
+            templist = list(matrix[i])
+            templist.__setslice__(position,position+1,vowel_list[i])
+            tempstr = ""
+            for j in templist:
+                tempstr += j
+            matrix[i] = tempstr
+    return matrix
 
 
-def name_hopper(big_list):
-    full_list = []
-    for current_name in big_list:
-        full_list.append( generate_name_variations(current_name) )
-    unwrapped_list = []
-    for x in full_list:
-        print "Length of x:", len(x)
-        for y in x:
-            unwrapped_list.append(y)
-    print "Unwrapped list site: ", len(unwrapped_list)
-    f = open("unwrapped_list.txt", "w")
-    for z in unwrapped_list:
+def main(name_collection):
+    unwrapthis = []
+    for upper in name_collection:
+        name = upper.lower()
+        index = vowel_index(name)
+        matrix = name_matrix(name)
+        vlist = vowel_list( len(matrix) )
+        new_matrix = mutate(matrix, vlist, index)
+        #print len(new_matrix)
+        #print new_matrix
+        unwrapthis.extend(new_matrix)
+    print "Total unwrapped names is {}".format(len(unwrapthis))
+    f = open("other_list.txt", "w")
+    for z in unwrapthis:
         f.write(z + "\n")
     f.close()
-
-name_hopper( ["Abdi","Abdul","Abdullahi","Adega","Akinyemi","Amir","Aroni","Bahraini","Bijal","Boit","Boris","Detai","Eegan","Farah","Fatuma","Gacheru","Gandii","Mahindra","Joram","Kabul","Karri","Karua","Kawhaja","Kimani","Kipchogi","Kofi","Kwach","Machozi","Mbaabu","Muchiri","Mugambi","Nyandarua","Okeyo","Olomide","Osire","Rehal"] )
